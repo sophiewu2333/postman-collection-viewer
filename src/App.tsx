@@ -28,10 +28,10 @@ function App() {
   const [error, setError] = useState<string>('');
   const [activeTab, setActiveTab] = useState<'overview' | 'endpoints' | 'models' | 'raw'>('overview');
 
-  // 从Postman Collection URL中提取collection_uuid
+  // Extract collection_uuid from Postman Collection URL
   const extractCollectionUuid = (url: string): string | null => {
     try {
-      // 匹配模式: https://api.postman.com/collections/{collection_uuid}
+      // Pattern matching: https://api.postman.com/collections/{collection_uuid}
       const regex = /https:\/\/api\.postman\.com\/collections\/([a-f0-9-]+)/i;
       const match = url.match(regex);
       return match ? match[1] : null;
@@ -41,10 +41,10 @@ function App() {
     }
   };
 
-  // 调用Postman Transform Collection API
+  // Call Postman Transform Collection API
   const transformCollectionToOpenAPI = async (collectionUuid: string): Promise<OpenAPISpec | null> => {
     try {
-      // 使用Postman的公共API来转换Collection到OpenAPI
+      // Use Postman's public API to transform Collection to OpenAPI
       const response = await fetch(`https://api.postman.com/collections/${collectionUuid}/transformations`, {
         method: 'GET',
         headers: {
@@ -59,7 +59,7 @@ function App() {
 
       const result = await response.json();
       
-      // 解析返回的OpenAPI规范
+      // Parse the returned OpenAPI specification
       if (result.output) {
         const openApiData = result.output;
         return typeof openApiData === 'string' ? JSON.parse(openApiData) : openApiData;
@@ -72,7 +72,7 @@ function App() {
     }
   };
 
-  // 解析API端点
+  // Parse API endpoints
   const parseEndpoints = (spec: OpenAPISpec): APIEndpoint[] => {
     const endpoints: APIEndpoint[] = [];
     
@@ -97,7 +97,7 @@ function App() {
     return endpoints;
   };
 
-  // 获取方法统计
+  // Get method statistics
   const getMethodStats = (endpoints: APIEndpoint[]) => {
     const stats = endpoints.reduce((acc, endpoint) => {
       acc[endpoint.method] = (acc[endpoint.method] || 0) + 1;
@@ -107,7 +107,7 @@ function App() {
     return stats;
   };
 
-  // 获取标签统计
+  // Get tag statistics
   const getTagStats = (endpoints: APIEndpoint[]) => {
     const tagCounts = endpoints.reduce((acc, endpoint) => {
       if (endpoint.tags) {
@@ -121,7 +121,7 @@ function App() {
     return Object.entries(tagCounts).sort((a, b) => b[1] - a[1]);
   };
 
-  // 获取模型定义
+  // Get model definitions
   const getModels = (spec: OpenAPISpec) => {
     return spec.components?.schemas || {};
   };
@@ -133,7 +133,7 @@ function App() {
       return;
     }
     
-    // 检查API密钥是否已配置
+    // Check if API key is configured
     if (!process.env.REACT_APP_POSTMAN_API_KEY) {
       setError('Postman API key is not configured. Please check your .env file and ensure REACT_APP_POSTMAN_API_KEY is set.');
       return;
@@ -144,7 +144,7 @@ function App() {
     setOpenApiSpec(null);
 
     try {
-      // 提取collection UUID
+      // Extract collection UUID
       const collectionUuid = extractCollectionUuid(collectionUrl);
       if (!collectionUuid) {
         throw new Error('Invalid Postman Collection URL format. Please ensure the URL follows the format: https://api.postman.com/collections/{collection_uuid}');
@@ -152,7 +152,7 @@ function App() {
 
       console.log('Extracted Collection UUID:', collectionUuid);
       
-      // 调用转换API
+      // Call transformation API
       const openApiData = await transformCollectionToOpenAPI(collectionUuid);
       
       if (openApiData) {
