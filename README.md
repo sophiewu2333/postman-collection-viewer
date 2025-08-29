@@ -1,46 +1,110 @@
-# Getting Started with Create React App
+# Postman Collection Viewer
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+一个用于查看 Postman 集合的 React 应用。
 
-## Available Scripts
+## 环境要求
 
-In the project directory, you can run:
+- Node.js >= 14.0.0
+- npm >= 6.0.0
 
-### `npm start`
+## 安装和运行
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### 首次设置
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+1. 克隆项目到本地
+```bash
+git clone <repository-url>
+cd postman-collection-viewer
+```
 
-### `npm test`
+2. 安装依赖
+```bash
+npm install
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+3. 配置环境变量
+   
+   项目根目录已包含 `.env.example` 文件作为配置模板。请按以下步骤配置：
+   
+   ```bash
+   # 复制配置模板
+   cp .env.example .env
+   
+   # 编辑 .env 文件，填入您的 API 密钥
+   # 或者手动创建 .env 文件：
+   ```
+   
+   ```bash
+   # Postman API Configuration
+   REACT_APP_POSTMAN_API_KEY=your_postman_api_key_here
+   ```
+   
+   **获取 Postman API 密钥：**
+   - 登录 [Postman](https://www.postman.com/)
+   - 进入 [API Keys 页面](https://go.postman.co/settings/me/api-keys)
+   - 创建新的 API 密钥或使用现有的密钥
+   - 将密钥复制到 `.env` 文件中
 
-### `npm run build`
+4. 启动开发服务器
+```bash
+npm start
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+应用将在 [http://localhost:3000](http://localhost:3000) 打开。
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 环境变量说明
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+⚠️ **重要：** 请确保在启动应用前正确配置 `.env` 文件中的 `REACT_APP_POSTMAN_API_KEY`。如果没有配置或配置错误，应用将无法正常工作。
 
-### `npm run eject`
+### 常见问题解决
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+如果遇到 "react-scripts command not found" 错误：
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+1. 确保已安装依赖：
+```bash
+npm install
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+2. 检查 react-scripts 是否正确安装：
+```bash
+npm list react-scripts
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+3. 如果问题持续，尝试清除缓存：
+```bash
+npm cache clean --force
+rm -rf node_modules package-lock.json
+npm install
+```
 
-## Learn More
+如果遇到 "Postman API key is not configured" 错误：
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+1. 确保已创建 `.env` 文件：
+```bash
+cp .env.example .env
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+2. 检查 `.env` 文件中的 API 密钥是否正确配置：
+```bash
+cat .env
+```
+
+3. 确保 API 密钥格式正确（以 `PMAK-` 开头）
+
+4. 重启开发服务器：
+```bash
+npm start
+```
+
+## 可用的脚本
+
+- `npm start` - 启动开发服务器
+- `npm run build` - 构建生产版本
+- `npm test` - 运行测试
+- `npm run eject` - 弹出配置（不可逆）
+
+## 技术栈
+
+- React 19.1.1
+- TypeScript 4.9.5
+- react-scripts 5.0.1
